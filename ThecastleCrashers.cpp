@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string.h>
 #include <cstdlib>
+#include <windows.h>
 using namespace std;
 
 bool Jsupremo= false;     //esto verificara que exista solo 1 guardian de 100 y solo 3 de 90 en la lectura.
@@ -195,7 +196,7 @@ void MostrarGbuscado(Guardian* raiz, int nivel){
 
 //funcion para leer archivos
 
-int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian*& raiz_arbol) {
+int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian* raiz_arbol) {
     ifstream archivo("archivo.txt");    
 
     if (!archivo) {
@@ -295,7 +296,7 @@ void AgregarNodo(vector<vector<nodo> > & grafo, const vector<ciudades> & grafo_c
 
 
 int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol) {
-    ifstream archivo("archivo.txt");    //aca se dberan leer las ciudades :D
+    ifstream archivo("citys.txt");    //aca se dberan leer las ciudades :D
 
     if (!archivo) {
         cerr << "No se pudo abrir el archivo." << endl;
@@ -330,7 +331,7 @@ int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol) {
 int main(){ 
 	int eliminarnivel = 0;      
     Guardian* raiz_arbol = NULL;    
-    int aseguradora = leerArchivo_arbolBinario("archivo.txt", &raiz_arbol);
+    int aseguradora = leerArchivo_arbolBinario("archivo.txt",raiz_arbol);
     if(aseguradora == 0){
     	cout<<"Analisis de datos de guardianes terminados no se encontraron fallas"<<std::endl;
 	}else if(aseguradora <= -1){
@@ -344,6 +345,42 @@ int main(){
 	}else{
 		LLamadoBan(raiz_arbol,eliminarnivel);
 	}
+	
+	
+	
+cout<<"___________________________________________________"<<endl;
+cout<<"________________Bienvenido guardian________________"<<endl;
+Sleep(1000);
+cout<<"      deberas elegir que guardian deseas ser       "<<endl;
+cout<<"  tu mision sera llegar al rango entre 90 y 99     \n     para ser de los mejores guardianes del reino"<<endl;
+cout<<"___________________________________________________"<<endl;
+Sleep(1000);
+cout<<"."<<endl;
+Sleep(1000);
+cout<<"."<<endl;
+Sleep(1000);
+cout<<"."<<endl;
+Sleep(1000);
+cout<<"."<<endl;
+Sleep(1000);
+cout<<"."<<endl;
+Sleep(1000);
+system("cls");
+
+cout<<"______________Que opcion desea elegir______________"<<endl;
+cout<<"           Opcion____________________1             "<<endl;  //acas edaran las opciones de que deben elegirr suceptible a cambio
+cout<<"           Opcion____________________2             "<<endl;
+cout<<"           Opcion____________________3             "<<endl;
+cout<<"           Opcion____________________4             "<<endl;
+cout<<"           Opcion____________________5             "<<endl;
+cout<<"___________________________________________________"<<std::endl;
+
+
+	
+	
+	
+	
+	
 	
     return 0;
 }
