@@ -328,7 +328,7 @@ int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol) {
 	return 0;   
 }
 int main(){ 
-	int eliminarnivel = 0;
+	int eliminarnivel = 0;      
     Guardian* raiz_arbol = NULL;    
     int aseguradora = leerArchivo_arbolBinario("archivo.txt", &raiz_arbol);
     if(aseguradora == 0){
