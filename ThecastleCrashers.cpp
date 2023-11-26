@@ -327,10 +327,10 @@ int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol) {
     archivo.close(); 
 	return 0;   
 }
-int main(){
+int main(){ 
 	int eliminarnivel = 0;
     Guardian* raiz_arbol = NULL;    
-    int aseguradora = leerArchivo_arbolBinario("archivo.txt", & raiz_arbol);
+    int aseguradora = leerArchivo_arbolBinario("archivo.txt", &raiz_arbol);
     if(aseguradora == 0){
     	cout<<"Analisis de datos de guardianes terminados no se encontraron fallas"<<std::endl;
 	}else if(aseguradora <= -1){
