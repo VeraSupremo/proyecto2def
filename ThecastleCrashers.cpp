@@ -209,7 +209,7 @@ int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian* raiz_arbol) 
     string linea;
     while (getline(archivo, linea)) {
         Guardian* nuevoGuardian = new Guardian;
-
+		ciudades nueva_ciudad;
         istringstream ss(linea);
         string token;
 
@@ -271,7 +271,6 @@ int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian* raiz_arbol) 
         agregarAlArbolGeneral(raiz_arbol, nuevoGuardian->lvl);
 
     }
-      
 
     archivo.close(); 
 	return 0;   
@@ -325,6 +324,25 @@ Guardian* BusquedaAmp(ArbolGeneral* raiz, int nivel){
 	
 	
 }
+
+
+
+
+//eliminar
+
+void EliminarGG(ArbolGeneral* raiz,int lvlnull){
+	
+	if(lvlnull == 100){
+		cout<<"imposible eliminar"<<endl;
+	}
+	
+	
+	cout<<"el aguardian a quedado sin niveles una lastima"<<endl;
+//	raiz->supremo->aprendices.erase;
+	
+}
+
+
 
 
 
