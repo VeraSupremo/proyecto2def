@@ -5,6 +5,8 @@
 #include <string.h>
 #include <cstdlib>
 #include <windows.h>
+#include <queue>
+
 using namespace std;
 
 bool Jsupremo= false;     //esto verificara que exista solo 1 guardian de 100 y solo 3 de 90 en la lectura.
@@ -21,6 +23,8 @@ struct ciudades{    //       la estructua ciudades se utilizara para la creacion
  string ciudad;
  Guardian* izquierda;
  Guardian* derecha;
+  vector<Guardian *> aprendices;
+  vector<Guardian *> candidatos;
 };
 
 //se crearan las funciones del arbol binario para colocar el ranking por niveles (k pro)
@@ -30,13 +34,12 @@ struct nodo{
  nodo* derecha;
 };
 //estructuraarbol general
-struct jerarquiaG{
+
+struct ArbolGeneral{
 	//esta estructura solo debera de mostrar al guardian de 100 de vidas como el de jerarquia maxima
 	// luego mostrara a sus 3 aprendices con 90 o 99 puntos de combate y por ultimo se mostrara a cada aprendiz de cada uno de ellos o se dejara 
-	//solo el top 3 
-	
-	
-	
+	//solo el top 3
+    Guardian* supremo;  // Nodo del guardián de nivel 100
 };
 
 
@@ -265,12 +268,67 @@ int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian* raiz_arbol) 
 
         cout<<nuevoGuardian->nombre << ", " << nuevoGuardian->lvl << ", " << nuevoGuardian->maestro << ", " << nuevoGuardian->ciudad << endl;
         agregar(raiz_arbol, nuevoGuardian->lvl);
+        agregarAlArbolGeneral(raiz_arbol, nuevoGuardian->lvl);
+
     }
       
 
     archivo.close(); 
 	return 0;   
 }
+
+
+//ahora se agregaran las funciones de buscar y luego la de eliminar(esta eliminara cuando el puntaje sea 0 :D )
+
+Guardian* BusquedaAmp(ArbolGeneral* raiz, int nivel){
+	if(raiz == NULL || raiz->supremo == NULL){
+		return 0;
+	}
+	queue<Guardian*> cols;
+//	std::unordered_set<Guardian*> envista;
+	
+	cols.push(raiz->supremo);
+//	envista.insert(raiz->supremo);  //marca que ya se vio al con mayor puntaje
+	while(!cols.empty()){
+		Guardian* gactual= cols.front();
+		cols.pop();
+		
+		
+		if(gactual->lvl == nivel){
+			cout<<gactual->nombre<<endl<<gactual->lvl<<endl;
+			return 0;
+		}
+		for(int i = 0; 	i < gactual->aprendices.size(); i++){
+		/*	if(BusquedaAmp(gactual,nivel)){
+				cout<<gactual->nombre<<endl<<gactual->lvl<<endl;
+				return gactual;
+			}else{
+				cols.push(Guardian->aprendices);
+			}*/
+			Guardian* aprendiz = new Guardian;
+			cols.push(aprendiz);
+		}
+		
+		for(int i = 0; 	i < gactual->candidatos.size(); i++){
+			/*if(BusquedaAmp(gactual,nivel)){
+				cout<<gactual->nombre<<endl<<gactual->lvl<<endl;
+				return gactual;
+			}else{
+				cols.push(Guardian->candidatos);
+			}*/
+			Guardian* candidato = new Guardian;
+			cols.push(candidato);
+		}
+		return NULL;
+	}
+	
+	
+	
+}
+
+
+
+
 
 
 //              grafos
@@ -328,9 +386,48 @@ int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol) {
     archivo.close(); 
 	return 0;   
 }
+
+
+//funciones del A general
+
+void agregarAlArbolGeneral(ArbolGeneral* arbol, Guardian* nuevoGuardian){
+    if (nuevoGuardian->lvl == 100){
+        if (arbol->supremo == NULL){
+            arbol->supremo = nuevoGuardian;
+        } else{
+            // Manejar el caso donde ya hay un supremo
+            cout<<"YA EXISTE UN GUARDIAN SUPREMO"<<std::endl;
+        }
+    } else if(nuevoGuardian->lvl >= 90 && nuevoGuardian->lvl <= 99){
+        if(maestros >= 0 && maestros < 3){
+            // Agregar al árbol general
+            arbol->supremo->aprendices.push_back(nuevoGuardian);
+            maestros++;
+        }else{
+            cout <<"El top de guardianes está lleno, seras posicionado en candidatos"<<std::endl;
+            arbol->supremo->candidatos.push_back(nuevoGuardian);
+        }
+    }
+    
+}
+
+void agregarAprendices(Guardian* raiz){
+	if(raiz == NULL){
+		return;
+	}else{
+		for(int i = 0; i < raiz->aprendices.size(); i++){
+			agregarAprendices(raiz);
+		}
+	}
+}
+
+
+
+
 int main(){ 
 	int eliminarnivel = 0;      
-    Guardian* raiz_arbol = NULL;    
+    Guardian* raiz_arbol = NULL;  
+//	ArbolGeneral* arbol = NULL;  
     int aseguradora = leerArchivo_arbolBinario("archivo.txt",raiz_arbol);
     if(aseguradora == 0){
     	cout<<"Analisis de datos de guardianes terminados no se encontraron fallas"<<std::endl;
@@ -368,10 +465,10 @@ Sleep(1000);
 system("cls");
 
 cout<<"______________Que opcion desea elegir______________"<<endl;
-cout<<"           Opcion____________________1             "<<endl;  //acas edaran las opciones de que deben elegirr suceptible a cambio
-cout<<"           Opcion____________________2             "<<endl;
-cout<<"           Opcion____________________3             "<<endl;
-cout<<"           Opcion____________________4             "<<endl;
+cout<<"           Opcion____ver los candidatos__1         "<<endl;  //acas edaran las opciones de que deben elegirr suceptible a cambio
+cout<<"           Opcion____ver  aun guardian___2         "<<endl;
+cout<<"           Opcion____Conoce el reino_____3         "<<endl;
+cout<<"           Opcion________Batalla_________4         "<<endl;
 cout<<"           Opcion____________________5             "<<endl;
 cout<<"___________________________________________________"<<std::endl;
 
