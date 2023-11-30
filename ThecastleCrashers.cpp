@@ -6,7 +6,7 @@
 #include <cstdlib>
 #include <windows.h>
 #include <queue>
-
+#include <unordered_map>
 using namespace std;
 
 bool Jsupremo= false;     //esto verificara que exista solo 1 guardian de 100 y solo 3 de 90 en la lectura.
@@ -21,7 +21,7 @@ struct ciudades{    //       la estructua ciudades se utilizara para la creacion
  int lvl;
  string maestro;
  string ciudad;
- Guardian* izquierda = NULL;
+ Guardian* izquierda = NULL;   //se agregaron los izquiera y drecha para usar l aestructura guardian co mo arbol binario tambien 
  Guardian* derecha = NULL;
  vector<Guardian *> aprendices;
  vector<Guardian *> candidatos;
@@ -30,8 +30,6 @@ struct ciudades{    //       la estructua ciudades se utilizara para la creacion
 //se crearan las funciones del arbol binario para colocar el ranking por niveles (k pro)
 struct nodo{
  int dato_nivel;
- nodo* izquierda;
- nodo* derecha;
 };
 //estructuraarbol general
 
@@ -56,10 +54,46 @@ void LLamadoBan(Guardian*&raiz, int nivel);
 Guardian* borrarnodo(Guardian* raiz, int nivel);
 void agregar(Guardian** raiz, Guardian* guardian);
 
+
+
+
+//              grafos
+class Ciudades{
+	private:
+		unordered_map<string, vector<string>> adyacencia;
+	public:
+		void agregarCamino(string ciudad1, string ciudad2){
+			adyacencia[ciudad1].push_back(ciudad2);
+			adyacencia[ciudad2].push_back(ciudad1);
+		}
+		void leerArchivo(){
+			ifstream archivo("citys.txt");
+			string linea;
+			while(getline(archivo, linea)){
+				istringstream iss(linea);
+				string ciudad1, ciudad2;
+				if(getline(iss, ciudad1, ',') && getline(iss, ciudad2, ',')){
+					agregarCamino(ciudad1, ciudad2);
+				}
+			}
+		}
+		void imprimir(){
+			for(const auto&par : adyacencia){
+				cout << par.first << " ==== ";
+				for(const auto&ciudadConectada : par.second){
+					cout << ciudadConectada << ". ";
+				}
+				cout << endl;
+			}
+		}
+};
+
+
+
 void inicializarbinario(vector<Guardian*> vector1, Guardian** raiz){
 	for(int i = 0; i< vector1.size(); i++){
 		cout<<"AAAAAAAA"<<endl;
-		agregar(raiz, vector1[i]);
+		agregar(raiz, vector1[i]);  //el incializzador debia de llamar a la funcion agregar pero debido a problemas en el codigo no se alcanzo a impleentar correctamenten 
 	}
 }
 void inicializargeneral(vector<Guardian*> vector1 ){
@@ -207,10 +241,6 @@ void MostrarGbuscado(Guardian* raiz, int nivel){
 	
 	delete hallado;
 }
-
-
-
-
 //funcion para leer archivos
 
 int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian* raiz_arbol, vector<Guardian*> *agregarvector) {
@@ -291,8 +321,6 @@ int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian* raiz_arbol, 
     archivo.close(); 
 	return 0;   
 }
-
-
 //ahora se agregaran las funciones de buscar y luego la de eliminar(esta eliminara cuando el puntaje sea 0 :D )
 
 Guardian* BusquedaAmp(ArbolGeneral* raiz, int nivel){
@@ -326,10 +354,6 @@ Guardian* BusquedaAmp(ArbolGeneral* raiz, int nivel){
 	
 	
 }
-
-
-
-
 //eliminar
 
 void EliminarGG(ArbolGeneral* raiz,int lvlnull){
@@ -351,76 +375,10 @@ void EliminarGG(ArbolGeneral* raiz,int lvlnull){
 
 
 
-//              grafos
-/*
-int VerCiudad(const vector<ciudades>& grafo_ciudades, const string& nombre_ciudad){
-    for (int i = 0; i < grafo_ciudades.size(); ++i) {
-        if (grafo_ciudades[i].nombreC == nombre_ciudad) {
-            return i;
-        }
-    }
-    return -1; // Si no se encuentra la ciudad
-}
-void AgregarNodo(vector<vector<nodo> > & grafo, const vector<ciudades> & grafo_ciudades, const string& nombre_origen, const string& nombre_destino) {
-   int indice_origen = ObtenerIndiceCiudad(grafo_ciudades, nombre_origen);
-   int indice_destino = ObtenerIndiceCiudad(grafo_ciudades, nombre_destino);
-   
-   
-   
-  
-}*/
 
 
-
-
-int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol,vector<ciudades> ciudadesG) {
-    ifstream archivo("citys.txt");    //aca se dberan leer las ciudades :D
-
-    if (!archivo) {
-        cerr << "No se pudo abrir el archivo." << endl;
-        return -1;
-    } 
-    string linea;
-    
-    while (getline(archivo, linea)) {
-    	ciudades nueva_ciudad;
-    	istringstream ss(linea);
-        string token2;
-
-       if (getline(ss, token2, ',')) {        //lector ciudad 
-            nueva_ciudad.nombreC = token2;
-        } else {
-            cerr << "Error al leer el nombre." << endl;
-            return -1;
-        }
-        
-        if (getline(ss, token2, ',')) {        //lector ciudad 
-    	    nueva_ciudad.Nconexion = token2;
-          	if(nueva_ciudad.nombreC == nueva_ciudad.Nconexion){
-          		return -1;
-			}else{
-				
-			}
-        } else {
-            cerr << "Error al leer el nombre." << endl;
-            return -1;
-        }
-       
-    }
-    
-    archivo.close(); 
-	return 0;   
-}
-void agregarciudad(vector<ciudades> grafo_ciudades, const ciudades* nueva_ciudad){
-    
-/*	int indiceCiudad= -1;
+void consultarCamino(){
 	
-	for(int i = 0; i < grafo_ciudades.size(); ++i) {
-        if (grafo_ciudades[i].nombreC == nueva_ciudad->nombreC) {
-            indiceCiudad = i;
-            break;
-        }
-    }*/
 }
 
 
@@ -463,7 +421,7 @@ void agregarAprendices(Guardian* raiz){
 
 
 int main(){ 
-	int eliminarnivel = 0;      
+	int eliminarnivel = 0, wh1 = 0;      
     Guardian* raiz_arbol = NULL; 
 	vector<Guardian* > listaguardianes; 
 	vector<string> ciudadesGG;
@@ -480,33 +438,14 @@ int main(){
 
 //LEER ALDEA
 	int aseguradoCIudad;
+	Ciudades c;
+	c.leerArchivo();
 
 
-/*	cout<<guardalist<<endl;
-	
-	for(int i = 0; i < guardalist; i++){
-		cout<< i <<endl;
-		cout<<listaguardianes[i]->nombre<<endl<<listaguardianes[i]->ciudad<<endl<<listaguardianes[i]->lvl<<endl<<listaguardianes[i]->maestro<<endl;
-	}
-	//inicializarbinario(listaguardianes,&raiz_arbol);
-	if(raiz_arbol == NULL){
-		cout<<"raiz nulo"<<endl;
-	}
-	imprimir_arbol_binario(raiz_arbol);
+system("cls");
 
-	return 0;
-	
-    eliminarnivel = 92;
-    if(eliminarnivel >= 100){
-    	cout<<"NO PUEDE ELIMINAR AL SUPREMO"<<endl;
-	}else{
-		LLamadoBan(raiz_arbol,eliminarnivel);
-	}
-	*/
-	
-	
 cout<<"___________________________________________________"<<endl;
-cout<<"________________Bienvenido guardian________________"<<endl;
+cout<<"________________Bienvenido jugador_________________"<<endl;
 Sleep(1000);
 cout<<"      deberas elegir que guardian deseas ser       "<<endl;
 cout<<"  tu mision sera llegar al rango entre 90 y 99     \n     para ser de los mejores guardianes del reino"<<endl;
@@ -524,20 +463,52 @@ cout<<"."<<endl;
 Sleep(1000);
 system("cls");
 
-cout<<"______________Que opcion desea elegir______________"<<endl;
-cout<<"           Opcion____ver los candidatos__1         "<<endl;  //acas edaran las opciones de que deben elegirr suceptible a cambio
-cout<<"           Opcion____ver  aun guardian___2         "<<endl;
-cout<<"           Opcion____Conoce el reino_____3         "<<endl;
-cout<<"           Opcion________Batalla_________4         "<<endl;
-cout<<"           Opcion____________________5             "<<endl;
-cout<<"___________________________________________________"<<std::endl;
 
+int question = 0;
+while(wh1== 0){
+	wh1 = 0;
+	cout<<"______________Que opcion desea elegir______________"<<endl;
+	cout<<"           Opcion____ver los candidatos__1         "<<endl;  //acas edaran las opciones de que deben elegirr suceptible a cambio
+	cout<<"           Opcion____ver a un guardian___2         "<<endl;
+	cout<<"           Opcion____Conoce el reino_____3         "<<endl;
+	cout<<"           Opcion________Batalla_________4         "<<endl;
+	cout<<"           Opcion_____crea tu camino_____5         "<<endl;
+	cout<<"           Opcion_________salir__________6         "<<std::endl;
+	cout<<"___________________________________________________"<<std::endl;
+	cin>> question;
+	switch(question){
+		case 1:
+			imprimir_arbol_binario(raiz_arbol);
+			break;
+		case 2:
+			
+			break;
+		case 3:
+				c.imprimir();
+	
+			break;
+		case 4:
+			
+			break;
+		case 5:
+		
+				
+			break;
+			
+		case 6:
+			wh1= 1;
+			break;
+		default: cout<<"incorrecto vuelva a ingresar"<<endl;
+	}
+	
+		
+	
+}//cierre del bucle
 
 	
 	
 	
 	
-	
-	
+	cout<<"gracias por jugar"<<endl;
     return 0;
 }
