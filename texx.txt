@@ -8,7 +8,6 @@ Thorin,88,Skadi,Sunflower Fields City
 Heimdall,84,Skadi,Desert City
 Baldr,71,Angrboda,River City
 Eirik,74,Heimdall,Hill City
-6
 Frigg,51,Baldr,Island City
 Surt,63,Skadi,Capital City
 Nanna,60,Baldr,Hill City

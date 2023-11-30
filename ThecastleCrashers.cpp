@@ -14,17 +14,17 @@ int maestros = 0;
 struct ciudades{    //       la estructua ciudades se utilizara para la creacion de un grafo no definido luego se agregaran sus funciones
 	string nombreC;
 	string Nconexion;
-	vector<ciudades* >caminoAdyacente; 
+	vector<string>caminoAdyacente; 
 };
  struct Guardian{
  string nombre;
  int lvl;
  string maestro;
  string ciudad;
- Guardian* izquierda;
- Guardian* derecha;
-  vector<Guardian *> aprendices;
-  vector<Guardian *> candidatos;
+ Guardian* izquierda = NULL;
+ Guardian* derecha = NULL;
+ vector<Guardian *> aprendices;
+ vector<Guardian *> candidatos;
 };
 
 //se crearan las funciones del arbol binario para colocar el ranking por niveles (k pro)
@@ -41,20 +41,28 @@ struct ArbolGeneral{
 	//solo el top 3
     Guardian* supremo;  // Nodo del guardián de nivel 100
 };
+void imprimir_arbol_binario(Guardian* raiz);
+void rPreOR(Guardian* raiz);
+void rInOr(Guardian* raiz);
+void rPsOr(Guardian* raiz);
+void agregarAlArbolGeneral(ArbolGeneral* arbol, Guardian* nuevoGuardian);
+void agregarciudad(vector<ciudades> grafo_ciudades, const ciudades* nueva_ciudad);
+int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol);
+Guardian* BusquedaAmp(ArbolGeneral* raiz, int nivel);
+int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian* raiz_arbol, vector<Guardian*> agregarvector);
+void MostrarGbuscado(Guardian* raiz, int nivel);
+Guardian* BuscarGuardian(Guardian* raiz,int nivel);
+void LLamadoBan(Guardian*&raiz, int nivel);
+Guardian* borrarnodo(Guardian* raiz, int nivel);
+void agregar(Guardian** raiz, Guardian* guardian);
 
-
-Guardian* crearNodo(int dato_nivel){
-
-    // Guardian* nuevo_guardia= new Guardian;
- // nuevo_guardia->lvl = dato_nivel;
-
- Guardian* nuevo_nodo = new Guardian;
- nuevo_nodo->lvl = dato_nivel;
-	
- nuevo_nodo->derecha = NULL;
- nuevo_nodo->izquierda = NULL;
-    
- return nuevo_nodo;
+void inicializarbinario(vector<Guardian*> vector1, Guardian** raiz){
+	for(int i = 0; i< vector1.size(); i++){
+		cout<<"AAAAAAAA"<<endl;
+		agregar(raiz, vector1[i]);
+	}
+}
+void inicializargeneral(vector<Guardian*> vector1 ){
 	
 }
 
@@ -62,26 +70,26 @@ void imprimir_arbol_binario(Guardian* raiz){
  if(raiz == NULL){
   return;
  }
-
- cout << raiz->lvl << " ";
-	
- imprimir_arbol_binario(raiz->izquierda);
- imprimir_arbol_binario(raiz->derecha);    
+ rInOr(raiz);
+ //rPreOR(raiz);
+ //rPsOr(raiz);
 }
 
-void agregar(Guardian*& raiz, int ingreso) {
- 
- if(raiz == NULL) {
- 	 raiz = crearNodo(ingreso);
-     return;
+void agregar(Guardian** raiz, Guardian* guardian) {
+ Guardian* gguardian2 = *raiz;
+ if(gguardian2 == NULL) {
+ 	gguardian2 = guardian;
+ 	*raiz = gguardian2;
+ 	
+    return ;
  }
 
- if(ingreso > raiz->lvl) { //aca si el guardian tiene un nivel menor se ira a l aizquierda sino a la derecha 
-  // raiz->izquierda = agregar(raiz->izquierda, ingreso); // aqui estas modificando la el lado de la raiz, pierdes conexiones. Conectas la raiz con el ultimo, no tiene sentido. 
-        agregar(raiz->derecha, ingreso); 
+ if(guardian->lvl > gguardian2->lvl) { //aca si el guardian tiene un nivel menor se ira a l aizquierda sino a la derecha 
+        agregar(&gguardian2->derecha, guardian); 
  } else {
-        agregar(raiz->izquierda, ingreso); 
- } 
+        agregar(&gguardian2->izquierda, guardian); 
+    } 
+
 }
 
 
@@ -99,6 +107,7 @@ void rPreOR(Guardian* raiz){
 	}
 	
 }
+
 void rInOr(Guardian* raiz){
 	if(raiz == NULL){
 		 return;
@@ -108,6 +117,7 @@ void rInOr(Guardian* raiz){
 		rInOr(raiz->derecha);		
 	}
 }
+
 void rPsOr(Guardian* raiz){
 	if(raiz== NULL){
 		 return;
@@ -121,6 +131,7 @@ void rPsOr(Guardian* raiz){
 
 
 //eliminar guardian
+
 Guardian* borrarnodo(Guardian* raiz, int nivel){
 	int borrador = nivel;
 	if(raiz == NULL){
@@ -159,11 +170,13 @@ Guardian* borrarnodo(Guardian* raiz, int nivel){
 	}
 }
 //ahora se creara una funcion que llamara a la funcion eliminar
+
 void LLamadoBan(Guardian*&raiz, int nivel){
 	raiz = borrarnodo(raiz,nivel);
 }
 
 //buscar guardian
+
 Guardian* BuscarGuardian(Guardian* raiz,int nivel){
 
 	if (raiz == NULL || raiz->lvl == nivel){
@@ -181,8 +194,9 @@ Guardian* BuscarGuardian(Guardian* raiz,int nivel){
 	
 }
 //ahora se creara una funcion dedicada a mostrar al guardian en caso de que se halla encontrado
+
 void MostrarGbuscado(Guardian* raiz, int nivel){
-	Guardian* hallado = BuscarGuardian(raiz,nivel);//   buscar solucion a estoooooooooooooooooooooo
+	Guardian* hallado = BuscarGuardian(raiz,nivel);
 	if(hallado != NULL){
 		cout<<"Se ha hallado al guardian:"<<endl<<"NOMBRE: "<<hallado->nombre<<endl<<"NIVEL:"<<hallado->lvl<<endl;
 		cout<<"MAESTRO:"<<hallado->maestro<<endl<<"CIUDAD:"<<hallado->ciudad<<endl;
@@ -199,8 +213,8 @@ void MostrarGbuscado(Guardian* raiz, int nivel){
 
 //funcion para leer archivos
 
-int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian* raiz_arbol) {
-    ifstream archivo("archivo.txt");    
+int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian* raiz_arbol, vector<Guardian*> *agregarvector) {
+    ifstream archivo("texx.txt");    
 
     if (!archivo) {
         cerr << "No se pudo abrir el archivo." << endl;
@@ -260,6 +274,7 @@ int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian* raiz_arbol) 
             return -1;
         }
         if (getline(ss, token, ',')) {
+        	
             nuevoGuardian->ciudad = token;
         } else {
             cerr<<"Error al leer la ciudad."<<endl;
@@ -267,11 +282,12 @@ int leerArchivo_arbolBinario(const string& nombreArchivo, Guardian* raiz_arbol) 
         }
 
         cout<<nuevoGuardian->nombre << ", " << nuevoGuardian->lvl << ", " << nuevoGuardian->maestro << ", " << nuevoGuardian->ciudad << endl;
-        agregar(raiz_arbol, nuevoGuardian->lvl);
-        agregarAlArbolGeneral(raiz_arbol, nuevoGuardian->lvl);
+        agregarvector->push_back(nuevoGuardian);
+	    agregar(&raiz_arbol, nuevoGuardian);
+        //agregarAlArbolGeneral(raiz_arbol, nuevoGuardian);
 
     }
-
+	imprimir_arbol_binario(raiz_arbol);
     archivo.close(); 
 	return 0;   
 }
@@ -284,10 +300,8 @@ Guardian* BusquedaAmp(ArbolGeneral* raiz, int nivel){
 		return 0;
 	}
 	queue<Guardian*> cols;
-//	std::unordered_set<Guardian*> envista;
 	
 	cols.push(raiz->supremo);
-//	envista.insert(raiz->supremo);  //marca que ya se vio al con mayor puntaje
 	while(!cols.empty()){
 		Guardian* gactual= cols.front();
 		cols.pop();
@@ -298,23 +312,11 @@ Guardian* BusquedaAmp(ArbolGeneral* raiz, int nivel){
 			return 0;
 		}
 		for(int i = 0; 	i < gactual->aprendices.size(); i++){
-		/*	if(BusquedaAmp(gactual,nivel)){
-				cout<<gactual->nombre<<endl<<gactual->lvl<<endl;
-				return gactual;
-			}else{
-				cols.push(Guardian->aprendices);
-			}*/
 			Guardian* aprendiz = new Guardian;
 			cols.push(aprendiz);
 		}
 		
 		for(int i = 0; 	i < gactual->candidatos.size(); i++){
-			/*if(BusquedaAmp(gactual,nivel)){
-				cout<<gactual->nombre<<endl<<gactual->lvl<<endl;
-				return gactual;
-			}else{
-				cols.push(Guardian->candidatos);
-			}*/
 			Guardian* candidato = new Guardian;
 			cols.push(candidato);
 		}
@@ -371,7 +373,7 @@ void AgregarNodo(vector<vector<nodo> > & grafo, const vector<ciudades> & grafo_c
 
 
 
-int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol) {
+int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol,vector<ciudades> ciudadesG) {
     ifstream archivo("citys.txt");    //aca se dberan leer las ciudades :D
 
     if (!archivo) {
@@ -379,7 +381,7 @@ int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol) {
         return -1;
     } 
     string linea;
-    vector<ciudades> ciudadesG;
+    
     while (getline(archivo, linea)) {
     	ciudades nueva_ciudad;
     	istringstream ss(linea);
@@ -393,7 +395,12 @@ int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol) {
         }
         
         if (getline(ss, token2, ',')) {        //lector ciudad 
-            nueva_ciudad.Nconexion = token2;
+    	    nueva_ciudad.Nconexion = token2;
+          	if(nueva_ciudad.nombreC == nueva_ciudad.Nconexion){
+          		return -1;
+			}else{
+				
+			}
         } else {
             cerr << "Error al leer el nombre." << endl;
             return -1;
@@ -404,6 +411,19 @@ int Leerciudad(const string & nombreArchivo, Guardian *&raiz_arbol) {
     archivo.close(); 
 	return 0;   
 }
+void agregarciudad(vector<ciudades> grafo_ciudades, const ciudades* nueva_ciudad){
+    
+/*	int indiceCiudad= -1;
+	
+	for(int i = 0; i < grafo_ciudades.size(); ++i) {
+        if (grafo_ciudades[i].nombreC == nueva_ciudad->nombreC) {
+            indiceCiudad = i;
+            break;
+        }
+    }*/
+}
+
+
 
 
 //funciones del A general
@@ -444,23 +464,45 @@ void agregarAprendices(Guardian* raiz){
 
 int main(){ 
 	int eliminarnivel = 0;      
-    Guardian* raiz_arbol = NULL;  
+    Guardian* raiz_arbol = NULL; 
+	vector<Guardian* > listaguardianes; 
+	vector<string> ciudadesGG;
 //	ArbolGeneral* arbol = NULL;  
-    int aseguradora = leerArchivo_arbolBinario("archivo.txt",raiz_arbol);
+    int aseguradora = leerArchivo_arbolBinario("archivo.txt",raiz_arbol, &listaguardianes);
     if(aseguradora == 0){
     	cout<<"Analisis de datos de guardianes terminados no se encontraron fallas"<<std::endl;
 	}else if(aseguradora <= -1){
 		cerr<<"ANALISIS FALLIDO REVISE EL ARCHIVO"<<std::endl;
 		return 1;
 	}
-    imprimir_arbol_binario(raiz_arbol);
+	int guardalist = listaguardianes.size();
+//	imprimir_arbol_binario(raiz_arbol);
+
+//LEER ALDEA
+	int aseguradoCIudad;
+
+
+/*	cout<<guardalist<<endl;
+	
+	for(int i = 0; i < guardalist; i++){
+		cout<< i <<endl;
+		cout<<listaguardianes[i]->nombre<<endl<<listaguardianes[i]->ciudad<<endl<<listaguardianes[i]->lvl<<endl<<listaguardianes[i]->maestro<<endl;
+	}
+	//inicializarbinario(listaguardianes,&raiz_arbol);
+	if(raiz_arbol == NULL){
+		cout<<"raiz nulo"<<endl;
+	}
+	imprimir_arbol_binario(raiz_arbol);
+
+	return 0;
+	
     eliminarnivel = 92;
     if(eliminarnivel >= 100){
     	cout<<"NO PUEDE ELIMINAR AL SUPREMO"<<endl;
 	}else{
 		LLamadoBan(raiz_arbol,eliminarnivel);
 	}
-	
+	*/
 	
 	
 cout<<"___________________________________________________"<<endl;
