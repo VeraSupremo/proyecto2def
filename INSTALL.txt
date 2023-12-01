@@ -3,6 +3,7 @@ install
 para instalar correctamente el rchivo necesita lo siguiente:
 
 tener devc++ en su version portable 5.11
+que el compilador sea tdm-gcc 4.9.2 64-bit
 junto a esto agregar en opciones de compilador -std=c++11 para que funciones ciertos aspectos de las funciones
 despues se necesita:
 verificar el correcto nombre de los archivos y que estos no tengan lo que significa cada posicion 
