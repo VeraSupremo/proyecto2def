@@ -11,6 +11,7 @@ ________________________________________________________________________________
 ### tenga la version de controlador que permita inicicializar variables dentro de un for
 ### colocar en opcione del compilador de dev c++ -std=c++11
 ### link de la presentacion en youtube:[video presentacion](https://youtu.be/BfErwep8QBs)
+SI ENCUENTRA ALGUN PROBLEMA PARA ACCEDER POR FAVOR AVISEME A LA BREVEDAD
 ### enlace ppt(si tiene algun problema por favor me puede avisar) [ppt](https://drive.google.com/drive/folders/1phIsClFsAhdW6u2peQg9JL3upIboYDdr?usp=sharing)
 
 ###breve resumen del programa
@@ -29,3 +30,5 @@ en la opcion de ver ranking se mostraran de forma in order los niveles de los gu
 la opcion de salir cerrara el programa 
 la opcion de ver guardian se encargara de mostrarte el aguardian correspondiente a su nivel de poder
 
+![image](https://github.com/VeraSupremo/proyecto2def/assets/114789446/c49de944-5ce2-4f28-95f2-e862c8dcaff5)
+aqui se evidencia que no hay errores o warningns
