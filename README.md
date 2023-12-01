@@ -10,6 +10,7 @@ ________________________________________________________________________________
 ### El codigo fue realizado en el programa dev c++ en su version portable 5.11 y su compilador tiene la version de TDM-GCC 4.9.2 64-bits
 ### tenga la version de controlador que permita inicicializar variables dentro de un for
 ### colocar en opcione del compilador de dev c++ -std=c++11
+### link de la presentacion en youtube:[video presentacion](https://youtu.be/BfErwep8QBs)
 ### enlace ppt(si tiene algun problema por favor me puede avisar) [ppt](https://drive.google.com/drive/folders/1phIsClFsAhdW6u2peQg9JL3upIboYDdr?usp=sharing)
 
 ###breve resumen del programa
