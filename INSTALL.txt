@@ -1,0 +1,18 @@
+install
+
+para instalar correctamente el rchivo necesita lo siguiente:
+
+tener devc++ en su version portable 5.11
+junto a esto agregar en opciones de compilador -std=c++11 para que funciones ciertos aspectos de las funciones
+despues se necesita:
+verificar el correcto nombre de los archivos y que estos no tengan lo que significa cada posicion 
+
+por ejemplo si el texto empieza asi:
+
+nombre,lvl,maestro,ciudad  <-------- esto no puede estar
+juan,12,esteban,chile chico <------- esto si debe estar
+
+(esto tampoco debe estar en las ciudades)
+ciudad,ciudad adyacente  <---------- no debe estar
+berlin,polonia    <-----------------esto debe estar
+

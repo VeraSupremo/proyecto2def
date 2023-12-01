@@ -435,14 +435,7 @@ int main(){
 	vector<Guardian* > listaguardianes; 
 	vector<string> ciudadesGG;
 //	ArbolGeneral* arbol = NULL;  
-    int aseguradora = leerArchivo_arbolBinario("archivo.txt",raiz_arbol, &listaguardianes);
-    if(aseguradora == 0){
-    	cout<<"Analisis de datos de guardianes terminados no se encontraron fallas"<<std::endl;
-	}else if(aseguradora <= -1){
-		cerr<<"ANALISIS FALLIDO REVISE EL ARCHIVO"<<std::endl;
-		return 1;
-	}
-	int guardalist = listaguardianes.size();
+   
 //	imprimir_arbol_binario(raiz_arbol);
 
 //LEER ALDEA
@@ -459,6 +452,18 @@ Sleep(1000);
 cout<<"      deberas elegir que guardian deseas ser       "<<endl;
 cout<<"  tu mision sera llegar al rango entre 90 y 99     \n     para ser de los mejores guardianes del reino"<<endl;
 cout<<"___________________________________________________"<<endl;
+Sleep(1000);
+ int aseguradora = leerArchivo_arbolBinario("archivo.txt",raiz_arbol, &listaguardianes);
+    if(aseguradora == 0){
+    	cout<<"Analisis de datos de guardianes terminados no se encontraron fallas"<<std::endl;
+    	Sleep(4000);
+    	system("cls");
+	}else if(aseguradora <= -1){
+		cerr<<"ANALISIS FALLIDO REVISE EL ARCHIVO"<<std::endl;
+		return 1;
+	}
+	int guardalist = listaguardianes.size();
+cout<<"CARGANDO JUEGO"<<endl;
 Sleep(1000);
 cout<<"."<<endl;
 Sleep(1000);
@@ -482,7 +487,8 @@ while(wh1== 0){
 	cout<<"           Opcion____Conoce el reino_____3         "<<endl;
 	cout<<"           Opcion________Batalla_________4         "<<endl;
 	cout<<"           Opcion___consulta el camino___5         "<<endl;
-	cout<<"           Opcion_________salir__________6         "<<std::endl;
+	cout<<"           Opcion________ranking_________6         "<<endl;
+	cout<<"           Opcion_________salir__________7         "<<std::endl;
 	cout<<"___________________________________________________"<<std::endl;
 	cin>> question;
 	switch(question){
@@ -497,7 +503,7 @@ while(wh1== 0){
 	
 			break;
 		case 4:
-			
+			cout<<"el proceso de batallas se esta preparando"<<endl;
 			break;
 		case 5:
 			
@@ -506,6 +512,10 @@ while(wh1== 0){
 			break;
 			
 		case 6:
+		
+			break;	
+		
+		case 7:
 			wh1= 1;
 			break;
 		default: cout<<"incorrecto vuelva a ingresar"<<endl;
