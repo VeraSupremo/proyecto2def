@@ -78,13 +78,35 @@ class Ciudades{
 			}
 		}
 		void imprimir(){
-			for(const auto&par : adyacencia){
-				cout << par.first << " ==== ";
-				for(const auto&ciudadConectada : par.second){
+			for(const auto&verificador : adyacencia){
+				cout << verificador.first << " ==== "; 
+				for(const auto&ciudadConectada : verificador.second){
 					cout << ciudadConectada << ". ";
 				}
 				cout << endl;
 			}
+		}
+		void consultarCamino(){
+			string consulta1, consulta2;
+			cout<<"ingrese nombre de la ciudad 1:"<<endl;
+			cin.ignore();
+			getline(cin,consulta1);			
+			cout<<"\nIngrese nombre de la segunda ciudad:"<<endl;
+			cin.ignore();
+			getline(cin,consulta2);
+			for(const auto&ciudadBuscada : adyacencia){
+				if(ciudadBuscada.first == consulta1){
+					//cout<<"1";
+					for(const auto&ciudadBuscada2 : ciudadBuscada.second){
+					//	cout<<"2";
+						if(ciudadBuscada2 == consulta2){
+							cout<<"EXISTE CAMINITO"<<endl;
+						}
+					}
+				}
+			}
+			cout<<"NO EXISTE CAMINO"<<std::endl;
+			
 		}
 };
 
@@ -371,19 +393,6 @@ void EliminarGG(ArbolGeneral* raiz,int lvlnull){
 
 
 
-
-
-
-
-
-
-void consultarCamino(){
-	
-}
-
-
-
-
 //funciones del A general
 
 void agregarAlArbolGeneral(ArbolGeneral* arbol, Guardian* nuevoGuardian){
@@ -472,7 +481,7 @@ while(wh1== 0){
 	cout<<"           Opcion____ver a un guardian___2         "<<endl;
 	cout<<"           Opcion____Conoce el reino_____3         "<<endl;
 	cout<<"           Opcion________Batalla_________4         "<<endl;
-	cout<<"           Opcion_____crea tu camino_____5         "<<endl;
+	cout<<"           Opcion___consulta el camino___5         "<<endl;
 	cout<<"           Opcion_________salir__________6         "<<std::endl;
 	cout<<"___________________________________________________"<<std::endl;
 	cin>> question;
@@ -491,7 +500,8 @@ while(wh1== 0){
 			
 			break;
 		case 5:
-		
+			
+			c.consultarCamino();
 				
 			break;
 			
